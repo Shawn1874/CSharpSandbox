@@ -24,6 +24,8 @@ void TestSecureCrtFunctions()
     _invalid_parameter_handler oldHandler, newHandler;
     newHandler = _invalid_parameter;
     oldHandler = _set_invalid_parameter_handler(newHandler);
+    // Disable the message box for assertions.
+    _CrtSetReportMode(_CRT_ASSERT, 0);
 
     // Experimentation with C-Run time functions
     wchar_t* src = L"this is a string that is too big to copy to the destination";
@@ -48,7 +50,7 @@ int main(int argc, wchar_t* argv[])
 	// Test streaming a user defined type to an output stream
 	/*UserTypeToString obj("Shawn Fox", 25, 14000000.35);
 	std::cout << obj << std::endl;*/
-
+    TestSecureCrtFunctions();
 	return 0;
 }
 
