@@ -7,6 +7,9 @@
 #include <string.h>
 #include <crtdbg.h>
 
+
+/* Print function, file, and line number when a CRT error occurs.
+*/
 void _invalid_parameter(const wchar_t * expression,
     const wchar_t * function,
     const wchar_t * file,
