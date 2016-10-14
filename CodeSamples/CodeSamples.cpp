@@ -47,10 +47,12 @@ void TestSecureCrtFunctions()
 
 int main(int argc, wchar_t* argv[])
 {
-	// Test streaming a user defined type to an output stream
+	// Uncomment the code below to test streaming a user defined type to an output stream
 	/*UserTypeToString obj("Shawn Fox", 25, 14000000.35);
 	std::cout << obj << std::endl;*/
-    TestSecureCrtFunctions();
+
+    // Uncomment the below call to test how errors work for CRT run time functions
+    //TestSecureCrtFunctions();
 	return 0;
 }
 
