@@ -12,7 +12,7 @@ UserTypeToString::~UserTypeToString()
 
 std::ostream& operator<<(std::ostream& os, const UserTypeToString& obj)
 {
-	// write obj to stream
-	os << "name - " << obj.name.c_str() << " age - " << obj.age << " netWorth - " << obj.netWorth;
-	return os;
+    // write obj to stream
+    os << "name - " << obj.name.c_str() << " age - " << obj.age << " netWorth - " << obj.netWorth;
+    return os;
 }
