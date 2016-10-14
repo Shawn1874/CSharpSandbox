@@ -1,10 +1,14 @@
 #include "stdafx.h"
 #include "UserTypeToString.h"
 
+/* Constructor
+*/
 UserTypeToString::UserTypeToString(std::string name, int age, double netWorth) : name(name), age(age), netWorth(netWorth)
 {
 }
 
+/* Destructor
+*/
 UserTypeToString::~UserTypeToString()
 {
 }
