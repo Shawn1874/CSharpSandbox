@@ -5,7 +5,6 @@ UserTypeToString::UserTypeToString(std::string name, int age, double netWorth) :
 {
 }
 
-
 UserTypeToString::~UserTypeToString()
 {
 }

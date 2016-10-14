@@ -31,6 +31,9 @@
 *.out
 *.app
 
+# Other
+*.sdf
+
 # Directories
 Release/
 Debug/
