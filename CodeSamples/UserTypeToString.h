@@ -15,10 +15,6 @@ public:
 	double netWorth;
 };
 
+// Must be inline or defined in the .cpp and can't be a member of the class
 std::ostream& operator<<(std::ostream& os, const UserTypeToString& obj);
-//{
-//	// write obj to stream
-//	os << "name - " << obj.name.c_str() << "age - " << obj.age << "netWorth - " << obj.netWorth << std::endl;
-//	return os;
-//}
 
