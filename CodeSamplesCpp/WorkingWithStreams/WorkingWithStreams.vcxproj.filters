@@ -24,7 +24,7 @@
     <ClInclude Include="targetver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UserTypeToString.h">
+    <ClInclude Include="Headers\UserTypeToString.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -32,10 +32,10 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CodeSamples.cpp">
+    <ClCompile Include="Src\CodeSamples.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UserTypeToString.cpp">
+    <ClCompile Include="Src\UserTypeToString.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
