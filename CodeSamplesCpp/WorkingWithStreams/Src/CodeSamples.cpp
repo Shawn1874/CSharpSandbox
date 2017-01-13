@@ -48,6 +48,19 @@ void TestSecureCrtFunctions()
     }
 }
 
+int foo(int n)
+{
+    std::cout << "n = " << n << std::endl;
+    /*if (n > 0)
+    {
+        std::cout << "n = " << n << std::endl;
+    }
+    else
+    {
+        return -1;
+    }*/
+}
+
 int main(int argc, wchar_t* argv[])
 {
     // Uncomment the code below to test streaming a user defined type to an output stream
@@ -56,6 +69,8 @@ int main(int argc, wchar_t* argv[])
 
     // Uncomment the below call to test how errors work for CRT run time functions
     TestSecureCrtFunctions();
+
+    foo(5);
     return 0;
 }
 
