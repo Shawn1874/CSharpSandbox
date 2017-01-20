@@ -34,7 +34,11 @@
 # Other
 *.sdf
 
+# Python cache files
+*.pyc
+
 # Directories
 Release/
 Debug/
 ipch/
+__pycache__
