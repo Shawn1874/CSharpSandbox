@@ -5,7 +5,8 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>3f351b25-97f9-4120-b05c-5aebfa5597e6</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PythonHelloWorld.py</StartupFile>
+    <StartupFile>
+    </StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>

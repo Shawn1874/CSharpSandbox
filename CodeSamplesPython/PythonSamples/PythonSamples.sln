@@ -7,6 +7,8 @@ Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonHelloWorld", "PythonH
 EndProject
 Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonStrings", "PythonStrings\PythonStrings.pyproj", "{4698CC33-1C7E-4538-8F08-1CBE3627FEB4}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "PythonCollections", "PythonCollections\PythonCollections.pyproj", "{2C781CD9-541E-432C-AA8F-50508EB9FB67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,8 @@ Global
 		{3F351B25-97F9-4120-B05C-5AEBFA5597E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4698CC33-1C7E-4538-8F08-1CBE3627FEB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4698CC33-1C7E-4538-8F08-1CBE3627FEB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C781CD9-541E-432C-AA8F-50508EB9FB67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C781CD9-541E-432C-AA8F-50508EB9FB67}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
