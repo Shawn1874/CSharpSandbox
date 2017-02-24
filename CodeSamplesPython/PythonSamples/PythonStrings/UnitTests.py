@@ -1,8 +1,8 @@
 ﻿#!/usr/bin/env python3
 import unittest
 
-class UnitTests(unittest.TestCase):
-    """description of class"""
+class StringTests(unittest.TestCase):
+    """Test of string methods"""
 
     def test_split(self):
         test = "C:\\first\\second\\third"
@@ -15,16 +15,22 @@ class UnitTests(unittest.TestCase):
 
     def test_slicing(self):
         test = "the cow jumped over the moon"
+
         result = test[:-4]
         self.assertEqual(result, "the cow jumped over the ")
+
         result = test[:3]
         self.assertEqual(result, "the")
+
         result = test[3:]
         self.assertEqual(result, " cow jumped over the moon")
+
         result = test[24:]
         self.assertEqual(result, "moon")
+
         result = test[-4:]
         self.assertEqual(result, "moon")
+
         result = test[8:14]
         self.assertEqual(result, "jumped")
 
@@ -77,7 +83,14 @@ class UnitTests(unittest.TestCase):
         self.assertTrue(value.isnumeric())
 
         # test of str.isidentifier
+        value = 'if'
+        self.assertTrue(value.islower())
 
+        value = 'FOR'
+        self.assertTrue(value.isupper())
+
+        value = 'TheTitle'
+        self.assertFalse(value.istitle())
         #test of str.islower
 
 if __name__ == '__main__':
