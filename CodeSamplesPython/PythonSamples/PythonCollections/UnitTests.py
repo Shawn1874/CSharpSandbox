@@ -8,5 +8,12 @@ class CollectionTests(unittest.TestCase):
         value = ["hello", "world"]
         self.assertEqual(len(value), 2)
 
+    def test_append(self):
+        anotherFruit = "peaches"
+        container = ["grapes", "apples", "pears"]
+        self.assertNotIn(anotherFruit, container)
+        container.append(anotherFruit)
+        self.assertIn(anotherFruit, container)
+
 if __name__ == '__main__':
     unittest.main()
