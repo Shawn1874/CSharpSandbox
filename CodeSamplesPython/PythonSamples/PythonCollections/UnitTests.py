@@ -34,9 +34,18 @@ class CollectionTests(unittest.TestCase):
         container.remove(6)
         self.assertNotIn(6, container)
         self.assertTrue(3 in container)
-        value = container.pop(1)
-        self.assertEqual(value, 3)
-        self.assertNotIn(3, container)
+        self.assertTrue(min(container), 1)
+        value = container.pop(0)
+        self.assertEqual(value, 1)
+        self.assertNotIn(1, container)
+        self.assertTrue(min(container), 3)
+        self.assertTrue(max(container), 11)
+
+    def test_tuple(self):
+        t = ('a', 1, ['hello', 'hi', 'greetings'])
+        self.assertEqual(len(t), 3)
+        t[2][0] = 'good day'
+        self.assertNotIn('hello', t[2])
 
 if __name__ == '__main__':
     unittest.main()
