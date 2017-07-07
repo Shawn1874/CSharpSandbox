@@ -43,3 +43,4 @@ Debug/
 ipch/
 __pycache__
 *.db
+Packages/
