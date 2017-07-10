@@ -27,6 +27,18 @@
     <ClInclude Include="TestRemove.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TestRotate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestBackInserter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestMinMaxOperations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -36,6 +48,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TestRemove.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestRotate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestBackInserter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestSearch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TestMinMaxOperations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
