@@ -147,7 +147,11 @@
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="TestBackInserter.h" />
+    <ClInclude Include="TestMinMaxOperations.h" />
     <ClInclude Include="TestRemove.h" />
+    <ClInclude Include="TestRotate.h" />
+    <ClInclude Include="TestSearch.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AlgorithmsTests.cpp" />
@@ -157,7 +161,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="TestBackInserter.cpp" />
+    <ClCompile Include="TestMinMaxOperations.cpp" />
     <ClCompile Include="TestRemove.cpp" />
+    <ClCompile Include="TestRotate.cpp" />
+    <ClCompile Include="TestSearch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -44,3 +44,4 @@ ipch/
 __pycache__
 *.db
 Packages/
+*.opendb
