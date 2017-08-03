@@ -55,6 +55,30 @@ TEST_F(TestVector, VectorAssignTest)
 	EXPECT_EQ(count, values.size());
 	EXPECT_EQ(values[0], 10);
 	EXPECT_EQ(values[3], 40);
+}
 
+TEST_F(TestVector, ExceptionsTest)
+{
+	std::vector<int> values = { 1, 2, 3, 4, 5 };
+	EXPECT_THROW(values.at(5), std::out_of_range);
+	EXPECT_NO_THROW(values.at(4));
+}
 
+TEST_F(TestVector, Iterators)
+{
+	std::vector<std::string> words = { "the", "cow", "jumped", "over", "the", "moon" };
+	EXPECT_EQ("the", *(words.begin()));
+	EXPECT_EQ("moon", *(words.end() - 1));
+	EXPECT_EQ("the", *(words.rend() - 1));
+	EXPECT_EQ("moon", *(words.rbegin()));
+
+	std::string expected = "the cow jumped over the moon";
+	std::string actual;
+	for (auto str : words)
+	{
+		actual += str;
+		actual += " ";
+	}
+	actual.erase(actual.end() - 1);
+	EXPECT_EQ(actual, expected);
 }
