@@ -26,10 +26,10 @@ namespace Timers
             Assert.AreEqual(100.0D, timer.Interval);
             Assert.IsTrue(timer.AutoReset);
             Assert.IsFalse(timer.Enabled);
-            Thread.Sleep(110);
+            Thread.Sleep(120);
             Assert.IsFalse(elapsed);
             timer.Enabled = true;
-            Thread.Sleep(110);
+            Thread.Sleep(120);
             Assert.IsTrue(elapsed);
         }
 
