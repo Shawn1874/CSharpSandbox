@@ -8,13 +8,13 @@ namespace EventsAndDelegates
 {
     public interface IPublisher
     {
-
+        event EventHandler<PriceChangedEventArgs> PriceChanged;
     }
 
     public class PriceChangedPublisher : IPublisher
     {
-        public event PriceChangedHandler PriceChanged;
-        public delegate void PriceChangedHandler(PriceChangedPublisher source, PriceChangedEventArgs args);
+        public event EventHandler<PriceChangedEventArgs> PriceChanged;
+        //public delegate void PriceChangedHandler(PriceChangedPublisher source, PriceChangedEventArgs args);
 
         public void ChangePrice(string symbol, decimal newPrice, decimal lastPrice)
         {

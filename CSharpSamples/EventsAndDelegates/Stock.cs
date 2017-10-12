@@ -20,23 +20,18 @@ namespace EventsAndDelegates
 
         //public event EventHandler<PriceChangedEventArgs> PriceChanged;
 
-        public Stock(string symbol, decimal initialPrice)
+        public Stock(string symbol, decimal initialPrice, IPublisher publisher)
         {
             _symbol = symbol;
             _currentPrice = initialPrice;
-        }
-
-        public void Subscribe(PriceChangedPublisher publisher)
-        {
             publisher.PriceChanged += OnPriceChanged;
         }
 
-        protected virtual void OnPriceChanged(PriceChangedPublisher source, PriceChangedEventArgs args)
+        protected virtual void OnPriceChanged(Object source, PriceChangedEventArgs pcArgs)
         {
-            if (args != null && args._symbol == _symbol)
+            if (pcArgs != null && pcArgs._symbol == _symbol)
             {
-                _currentPrice = args._newPrice;
-                Console.WriteLine(String.Format("Price changed from {0} to {1}", args._lastPrice, args._newPrice));
+                _currentPrice = pcArgs._newPrice;
             }
         }
     }
