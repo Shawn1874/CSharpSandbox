@@ -51,6 +51,8 @@ namespace Arrays
             // Initialize the elements:
             arr[0] = new int[5] { 1, 3, 5, 7, 9 };
             arr[1] = new int[4] { 2, 4, 6, 8 };
+
+            // Accessing jagged arrays is different from multi-dimensional arrays
             Assert.That(arr[0][0], Is.EqualTo(1));
             Assert.That(arr[1][3], Is.EqualTo(8));
         }
