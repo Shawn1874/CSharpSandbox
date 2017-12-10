@@ -48,7 +48,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BasicStringOperations.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StringExtMethods.cs" />
+    <Compile Include="StringFormatting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
