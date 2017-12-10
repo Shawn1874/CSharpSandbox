@@ -70,6 +70,27 @@ namespace Operators
         }
 
         [Test]
+        public void NullCoalesceOperatorTest()
+        {
+            string message = null;
+            Assert.That(message ?? "default", Is.EqualTo("default"));
+
+            message = "hello world";
+            Assert.That(message ?? "default", Is.EqualTo("hello world"));
+        }
+
+        [Test]
+        public void NullConditionalOperatorTest()
+        {
+            List<int> numbers = null;
+            Assert.That(numbers?.Count, Is.Null);
+            Assert.That(numbers?[0], Is.Null);
+
+            numbers = new List<int>();
+            Assert.That(numbers?.Count, Is.EqualTo(0));
+        }
+
+        [Test]
         public void IncrementDecrementTests()
         {
             int a = 5;
