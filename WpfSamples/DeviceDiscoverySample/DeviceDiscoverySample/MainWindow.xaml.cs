@@ -1,47 +1,68 @@
-﻿using Serilog;
-using Serilog.Core;
-using Serilog.Events;
+﻿
+using Logging;
 using System;
-using System.Threading;
+using System.Collections.ObjectModel;
 using System.Windows;
+using UsbManagement;
 
 namespace DeviceDiscoverySample
 {
-    class ThreadIdEnricher : ILogEventEnricher
-    {
-        public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
-        {
-            logEvent.AddPropertyIfAbsent(propertyFactory.CreateProperty(
-                    "ThreadId", Thread.CurrentThread.ManagedThreadId));
-        }
-    }
 
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        public ObservableCollection<string> ComPortNames { get; set; }  = new ObservableCollection<string>();
+        private UsbSearcher searcher = new UsbSearcher();
 
-        string logTemplate = "{Timestamp:yyyy-MMM-dd HH:mm:ss.fff zzz} [{Level}] ({ThreadId}) {Message}{NewLine}{Exception}";
         public MainWindow()
         {
             InitializeComponent();
 
-            ILogger logger = new LoggerConfiguration()
-               .WriteTo.RollingFile("logfile.txt", LogEventLevel.Information, outputTemplate: logTemplate, retainedFileCountLimit: 2)
-               .Enrich.With(new ThreadIdEnricher())
-               .WriteTo.Console(LogEventLevel.Information, outputTemplate: logTemplate)
-               .Enrich.With(new ThreadIdEnricher())
-                .CreateLogger();
-
-            logger.Information("Application started");
-
-            Log.Logger = logger;
+            DataContext = this;
+            Log.Initialize();
+            Log.Logger.Information("Application started");
         }
 
-        private void OnButtonClicked(object sender, RoutedEventArgs e)
+        private void SearchButtonCIMV2_Click(object sender, RoutedEventArgs e)
         {
-            Log.Logger.Information("Button Clicked");
+
+            try
+            {
+                Log.Logger.Information("SearchButtonCIMV2_Click Clicked");
+                ComPortNames.Clear();
+                var devices = searcher.SearchForCimV2SerialDevices();
+                foreach (var device in devices)
+                {
+                    ComPortNames.Add(device);
+                }
+                Log.Logger.Information("Found: {ComPorts}", ComPortNames);
+            }
+            catch (System.Exception ex)
+            {
+                Log.Logger.Error(ex.ToString());
+            }
+        }
+
+        private void SearchButtonWMI_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Log.Logger.Information("SearchButtonCIMV2_Click Clicked");
+
+                ComPortNames.Clear();
+                var devices = searcher.SearchForWmiSerialDevices();
+                foreach (var device in devices)
+                {
+                    ComPortNames.Add(device);
+                }
+                Log.Logger.Information("Found: {ComPorts}", ComPortNames);
+            }
+            catch (System.Exception ex)
+            {
+                Log.Logger.Error(ex.ToString());
+            }
         }
     }
 }
