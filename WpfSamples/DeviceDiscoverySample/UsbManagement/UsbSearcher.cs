@@ -12,6 +12,30 @@ namespace UsbManagement
     {
         private readonly string _instanceNameKey = "InstanceName";
         private readonly string _portNameKey = "PortName";
+        private readonly object _watcherLock = new object();
+        private ManagementEventWatcher _devicePlugWatcher;  //Event watcher for plugged devices
+        private ManagementEventWatcher _deviceUnplugWatcher; //Event watcher for Unplugged devices
+
+        /// <summary>
+        ///  Event Args
+        /// </summary>
+        public class DeviceChangeEventArgs : EventArgs
+        {
+            public string DeviceId { get; set; }
+        }
+
+        /// <summary>
+        /// Event triggered from a target device plugged detection
+        /// 
+        /// </summary>
+        public event Action<object, DeviceChangeEventArgs> DevicePluggedEvent;
+
+        /// <summary>
+        /// Event triggered from a target device removal detection
+        /// 
+        /// </summary>
+        public event Action<object, DeviceChangeEventArgs> DeviceUnpluggedEvent;
+        
 
         public List<string> SearchForWmiSerialDevices()
         {
@@ -78,6 +102,125 @@ namespace UsbManagement
                 Log.Logger.Error(e.Message);
             }
             return ports;
+        }        
+        
+        /// <summary>
+        /// Setup Removal and Plug event on exclusive devices given the device's unique vendor ID and product ID
+        /// </summary>
+        /// <returns></returns>
+        public void SetupDeviceChangeEvents()
+        {
+            string vid = "VID_2A75";
+            string pid = "PID_0003";
+            lock (_watcherLock)
+            {
+                try
+                {
+                    if (_devicePlugWatcher == null)
+                    {
+                        string pluggedQueryStr =
+                            "SELECT * FROM __InstanceCreationEvent " +
+                            "WITHIN 1 "
+                            + "WHERE TargetInstance ISA 'Win32_SerialPort' AND TargetInstance.PNPDeviceID like 'USB\\\\" +
+                            vid + "&%" + pid + "\\\\%'";
+
+                        _devicePlugWatcher = new ManagementEventWatcher(pluggedQueryStr);
+                        _devicePlugWatcher.EventArrived += (DevicePluggedEventReceived);
+                        _devicePlugWatcher.Start();
+                        Log.Logger.Information("{Class} Registered for device plugged events", GetType());
+                    }
+
+                    if (_deviceUnplugWatcher == null)
+                    {
+                        string unpluggedQueryStr =
+                            "SELECT * FROM __InstanceDeletionEvent " +
+                            "WITHIN 1 "
+                            + "WHERE TargetInstance ISA 'Win32_SerialPort' AND TargetInstance.PNPDeviceID like 'USB\\\\" +
+                            vid + "&%" + pid + "\\\\%'";
+
+                        _deviceUnplugWatcher = new ManagementEventWatcher(unpluggedQueryStr);
+                        _deviceUnplugWatcher.EventArrived += (DeviceUnpluggedEventReceived);
+                        _deviceUnplugWatcher.Start();
+                        Log.Logger.Information("{Class} Registered for device unplugged events", GetType());
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log.Logger.Error(ex, "Error Initializing Component {Class}", GetType());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Device change event handler
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void DevicePluggedEventReceived(object sender, EventArrivedEventArgs e)
+        {
+            lock (_watcherLock)
+            {
+                try
+                {
+                    PropertyData p = e.NewEvent.Properties["TargetInstance"];
+                    ManagementBaseObject mbo = p.Value as ManagementBaseObject;
+                    PropertyData deviceId = mbo.Properties["DeviceID"];
+                    PropertyData instanceId = mbo.Properties["PNPDeviceID"];
+
+                    try
+                    {
+
+                        DevicePluggedEvent(this, new DeviceChangeEventArgs
+                        {
+                            DeviceId = (string) deviceId.Value
+                        });
+                    }
+                    catch (ArgumentException argEx)
+                    {
+                        Log.Logger.Error(argEx, "{Class} failed to send DevicePluggedEvent", GetType());
+                    }
+                }
+                catch (NullReferenceException nullEx)
+                {
+                    Log.Logger.Error(nullEx, "{Class} failed to send DevicePluggedEvent", GetType());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Device change event handler - Removed devices
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void DeviceUnpluggedEventReceived(object sender, EventArrivedEventArgs e)
+        {
+            lock (_watcherLock)
+            {
+                try
+                {
+                    PropertyData p = e.NewEvent.Properties["TargetInstance"];
+                    ManagementBaseObject mbo = p.Value as ManagementBaseObject;
+                    PropertyData deviceId = mbo.Properties["DeviceID"];
+                    PropertyData instanceId = mbo.Properties["PNPDeviceID"];
+
+                    try
+                    {
+
+                        DeviceUnpluggedEvent(this, new DeviceChangeEventArgs
+                        {
+                            DeviceId = (string)deviceId.Value
+                        });
+                    }
+                    catch (ArgumentException argEx)
+                    {
+                        Log.Logger.Error(argEx, "{Class} failed to send DeviceUnpluggedEvent", GetType());
+                    }
+                }
+                catch (NullReferenceException nullEx)
+                {
+                    Log.Logger.Error(nullEx, "{Class} failed to send DeviceUnpluggedEvent", GetType());
+                }
+            }
         }
     }
 }

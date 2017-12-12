@@ -15,9 +15,13 @@
                 </Style>
             </StackPanel.Resources>
 
-            <TextBlock FontWeight="Bold" Margin="0,0,0,10">ListBox selection</TextBlock>
-            <Button Click="SearchButtonWMI_Click" Content="Search WMI devices" />
-            <Button Click="SearchButtonCIMV2_Click" Content="Search CIMV2 devices" />
+            <TextBlock FontWeight="Bold" Margin="0,0,0,10">Product Id</TextBlock>
+            <TextBox Text="{Binding ProductId}" />
+            <TextBlock FontWeight="Bold" Margin="0,0,0,10">Vendor Id</TextBlock>
+            <TextBox Text="{Binding VendorId}"/>
+            <TextBlock FontWeight="Bold" Margin="0,0,0,10">Data to Send</TextBlock>
+            <TextBox Text="{Binding CommandToSend}"/>
+            <Button Margin="5" Click="SendDataClicked" Content="Send Data" />
 
         </StackPanel >
 
@@ -37,7 +41,7 @@
                 <ScrollViewer VerticalScrollBarVisibility="Auto">
                     <TextBlock 
                                 Name="LogBox"
-                                Text="{Binding Logger, Mode=OneWay}"/>
+                                Text="{Binding StatusBoxText, Mode=OneWay}"/>
                 </ScrollViewer>
             </DockPanel>
         </Border>
