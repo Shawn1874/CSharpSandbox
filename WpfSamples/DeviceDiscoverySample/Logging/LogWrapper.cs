@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Logging
 {
-    public static class Log
+    public static class LogWrapper
     {
-        public static string LogTemplate { get; set; } = "{Timestamp:yyyy-MMM-dd HH:mm:ss.fff zzz} [{Level}] ({ThreadId}) {Message}{NewLine}{Exception}";
+        public static string LogTemplate { get; set; } = "{Timestamp:yyyy-MMM-dd HH:mm:ss.fff zzz} [{Level}] {SourceContext:l} ({ThreadId}){Message}{NewLine}{Exception}";
 
         public static ILogger Logger { get; private set; }
 
-        public static void Initialize()
+        static LogWrapper()
         {
             Logger = new LoggerConfiguration()
                .WriteTo.RollingFile("logfile.txt", LogEventLevel.Information, outputTemplate: LogTemplate)

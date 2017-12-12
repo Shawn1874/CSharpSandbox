@@ -5,6 +5,7 @@ using System.Windows;
 using System.IO.Ports;
 using System.Diagnostics;
 using Logging;
+using Serilog;
 
 namespace UsbManagement
 {
@@ -15,6 +16,9 @@ namespace UsbManagement
         private readonly object _watcherLock = new object();
         private ManagementEventWatcher _devicePlugWatcher;  //Event watcher for plugged devices
         private ManagementEventWatcher _deviceUnplugWatcher; //Event watcher for Unplugged devices
+
+        public string ProductId { get; set; }
+        public string VendorId { get; set; }
 
         /// <summary>
         ///  Event Args
@@ -35,10 +39,17 @@ namespace UsbManagement
         /// 
         /// </summary>
         public event Action<object, DeviceChangeEventArgs> DeviceUnpluggedEvent;
-        
+
+        ILogger _log = LogWrapper.Logger.ForContext<UsbSearcher>();
+
 
         public List<string> SearchForWmiSerialDevices()
         {
+            if (string.IsNullOrEmpty(VendorId) || string.IsNullOrEmpty(ProductId))
+            {
+                _log.Error("VendorId and ProductId must be set before searching for devices!");
+            }
+
             var ports = new List<string>();
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(
                 "root\\WMI", 
@@ -49,11 +60,13 @@ namespace UsbManagement
                 foreach (ManagementObject queryObj in searcher.Get())
                 {
                     var instanceName = queryObj[_instanceNameKey].ToString();
-                    if (instanceName.StartsWith(@"USB\VID_2A75&PID_0003"))
+                    var searchString = string.Format("USB\\{0}&{1}", VendorId, ProductId);
+                    //if (instanceName.StartsWith(@"USB\VID_2A75&PID_0003"))
+                    if (instanceName.StartsWith(searchString))
                     {
                         var portName = queryObj[_portNameKey].ToString();
-                        Log.Logger.Information("Instance Name: {InstanceName}", queryObj[_instanceNameKey]);
-                        Log.Logger.Information("Port Name: {PortName}", portName);
+                        _log.Information("Instance Name: {InstanceName}", queryObj[_instanceNameKey]);
+                        _log.Information("Port Name: {PortName}", portName);
 
                         //If the serial port's instance name contains USB it must be a USB to serial device  
                         if (instanceName.Contains("USB"))
@@ -65,7 +78,7 @@ namespace UsbManagement
             }
             catch (ManagementException e)
             {
-                Log.Logger.Error(e.Message);
+                _log.Error(e, e.Message);
             }
 
             return ports;
@@ -73,6 +86,11 @@ namespace UsbManagement
 
         public List<string> SearchForCimV2SerialDevices()
         {
+            if (string.IsNullOrEmpty(VendorId) || string.IsNullOrEmpty(ProductId))
+            {
+                _log.Error("VendorId and ProductId must be set before searching for devices!");
+            }
+
             var ports = new List<string>();
             ManagementObjectSearcher searcher = new ManagementObjectSearcher(
                 "root\\CIMV2",
@@ -84,10 +102,11 @@ namespace UsbManagement
                 {
                     string deviceId = queryObj["PNPDeviceID"].ToString();
                     string deviceSerialCom = queryObj["DeviceID"].ToString();
-                    if (deviceId.Contains(@"USB\VID_2A75&PID_0003"))
+                    var searchString = string.Format("USB\\{0}&{1}", VendorId, ProductId);
+                    if (deviceId.StartsWith(searchString))
                     {
-                        Log.Logger.Information("Instance Name: {DeviceId}", deviceId);
-                        Log.Logger.Information("Port Name: {DeviceSerialCom}", deviceSerialCom);
+                        _log.Information("Instance Name: {DeviceId}", deviceId);
+                        _log.Information("Port Name: {DeviceSerialCom}", deviceSerialCom);
 
                         //If the serial port's instance name contains USB it must be a USB to serial device  
                         if (deviceId.Contains("USB"))
@@ -99,7 +118,7 @@ namespace UsbManagement
             }
             catch (ManagementException e)
             {
-                Log.Logger.Error(e.Message);
+                _log.Error(e.Message);
             }
             return ports;
         }        
@@ -110,8 +129,11 @@ namespace UsbManagement
         /// <returns></returns>
         public void SetupDeviceChangeEvents()
         {
-            string vid = "VID_2A75";
-            string pid = "PID_0003";
+            if (string.IsNullOrEmpty(VendorId) || string.IsNullOrEmpty(ProductId))
+            {
+                _log.Error("VendorId and ProductId must be set before searching for devices!");
+            }
+
             lock (_watcherLock)
             {
                 try
@@ -122,12 +144,12 @@ namespace UsbManagement
                             "SELECT * FROM __InstanceCreationEvent " +
                             "WITHIN 1 "
                             + "WHERE TargetInstance ISA 'Win32_SerialPort' AND TargetInstance.PNPDeviceID like 'USB\\\\" +
-                            vid + "&%" + pid + "\\\\%'";
+                            VendorId + "&%" + ProductId + "\\\\%'";
 
                         _devicePlugWatcher = new ManagementEventWatcher(pluggedQueryStr);
                         _devicePlugWatcher.EventArrived += (DevicePluggedEventReceived);
                         _devicePlugWatcher.Start();
-                        Log.Logger.Information("{Class} Registered for device plugged events", GetType());
+                        _log.Information(" Registered for device plugged events");
                     }
 
                     if (_deviceUnplugWatcher == null)
@@ -136,17 +158,17 @@ namespace UsbManagement
                             "SELECT * FROM __InstanceDeletionEvent " +
                             "WITHIN 1 "
                             + "WHERE TargetInstance ISA 'Win32_SerialPort' AND TargetInstance.PNPDeviceID like 'USB\\\\" +
-                            vid + "&%" + pid + "\\\\%'";
+                            VendorId + "&%" + ProductId + "\\\\%'";
 
                         _deviceUnplugWatcher = new ManagementEventWatcher(unpluggedQueryStr);
                         _deviceUnplugWatcher.EventArrived += (DeviceUnpluggedEventReceived);
                         _deviceUnplugWatcher.Start();
-                        Log.Logger.Information("{Class} Registered for device unplugged events", GetType());
+                        _log.Information(" Registered for device unplugged events");
                     }
                 }
                 catch (Exception ex)
                 {
-                    Log.Logger.Error(ex, "Error Initializing Component {Class}", GetType());
+                    _log.Error(ex, "Error Initializing Component ");
                 }
             }
         }
@@ -177,12 +199,12 @@ namespace UsbManagement
                     }
                     catch (ArgumentException argEx)
                     {
-                        Log.Logger.Error(argEx, "{Class} failed to send DevicePluggedEvent", GetType());
+                        _log.Error(argEx, " failed to send DevicePluggedEvent");
                     }
                 }
                 catch (NullReferenceException nullEx)
                 {
-                    Log.Logger.Error(nullEx, "{Class} failed to send DevicePluggedEvent", GetType());
+                    _log.Error(nullEx, " failed to send DevicePluggedEvent");
                 }
             }
         }
@@ -213,12 +235,12 @@ namespace UsbManagement
                     }
                     catch (ArgumentException argEx)
                     {
-                        Log.Logger.Error(argEx, "{Class} failed to send DeviceUnpluggedEvent", GetType());
+                        _log.Error(argEx, " failed to send DeviceUnpluggedEvent");
                     }
                 }
                 catch (NullReferenceException nullEx)
                 {
-                    Log.Logger.Error(nullEx, "{Class} failed to send DeviceUnpluggedEvent", GetType());
+                    _log.Error(nullEx, " failed to send DeviceUnpluggedEvent");
                 }
             }
         }

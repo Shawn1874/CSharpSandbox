@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows;
 using UsbManagement;
 using System.IO.Ports;
+using Serilog;
 
 namespace DeviceDiscoverySample
 {
@@ -66,15 +67,16 @@ namespace DeviceDiscoverySample
             }
         }
 
+        ILogger _log = LogWrapper.Logger.ForContext<MainWindow>();
+
         public MainWindow()
         {
             InitializeComponent();
 
             DataContext = this;
-            Log.Initialize();
 
             // search for devices already plugged in before the start of the application
-            Log.Logger.Information("{Class} - search for devices", GetType());
+            _log.Information("search for devices");
             SearchForDevices();
 
             // Setup event registration for plugged and unplugged events
@@ -87,7 +89,9 @@ namespace DeviceDiscoverySample
         {
             try
             {
-                Log.Logger.Information("SearchButtonCIMV2_Click Clicked");
+                _log.Information("SearchButtonCIMV2_Click Clicked");
+                searcher.VendorId = VendorId;
+                searcher.ProductId = ProductId;
                 ComPortNames.Clear();
                 var devices = searcher.SearchForCimV2SerialDevices();
                 foreach (var device in devices)
@@ -96,11 +100,11 @@ namespace DeviceDiscoverySample
                     serialPorts[device] = new SerialPort(device, 115200);
                     serialPorts[device].ReadTimeout = 250;
                 }
-                Log.Logger.Information("Found: {ComPorts}", ComPortNames);
+                _log.Information("Found: {ComPorts}", ComPortNames);
             }
             catch (System.Exception ex)
             {
-                Log.Logger.Error(ex.ToString());
+                _log.Error(ex.ToString());
             }
         }
 
@@ -108,7 +112,7 @@ namespace DeviceDiscoverySample
         {
             try
             {
-                Log.Logger.Information("{Class} SendDataClicked - sending command {Command}", GetType(), command);
+                _log.Information(" SendDataClicked - sending command {Command}", command);
 
                 String selected = (String)Ports.SelectedItem;
                 if (!String.IsNullOrEmpty(selected) && !string.IsNullOrEmpty(command) && serialPorts.ContainsKey(selected))
@@ -121,7 +125,7 @@ namespace DeviceDiscoverySample
                     {
                         do
                         {
-                            StatusBoxText = port.ReadLine();
+                            StatusBoxText = port.ReadLine().TrimEnd(Environment.NewLine.ToCharArray());
                         } while (true); // read until ReadLine throws
                     }
                     catch (TimeoutException)
@@ -132,7 +136,7 @@ namespace DeviceDiscoverySample
             }
             catch (System.Exception ex)
             {
-                Log.Logger.Error(ex, "{Class} SendDataClicked exception", GetType());
+                _log.Error(ex, "SendDataClicked exception");
             }
         }
 
@@ -147,7 +151,7 @@ namespace DeviceDiscoverySample
                     ComPortNames.Add(portNum);
                     serialPorts[portNum] = new SerialPort(portNum, 115200);
                     serialPorts[portNum].ReadTimeout = 250;
-                    Log.Logger.Information("{Class} OnDevicePluggedEvent - {ComPort} discovered", GetType(), portNum);
+                    _log.Information(" OnDevicePluggedEvent - {ComPort} discovered", portNum);
                     StatusBoxText = string.Format("{0} plugged in", portNum);
                 }
             }
@@ -159,7 +163,7 @@ namespace DeviceDiscoverySample
             string portNum = (string)e.DeviceId;
             Dispatcher.Invoke(new Action(() => ComPortNames.Remove(portNum)));
             ReleasePort(portNum);
-            Log.Logger.Information("{Class} OnDeviceUnPluggedEvent - {ComPort} unplugged", GetType(), portNum);
+            _log.Information(" OnDeviceUnPluggedEvent - {ComPort} unplugged", portNum);
             StatusBoxText = string.Format("{0} unplugged", portNum);
         }
 
@@ -188,7 +192,7 @@ namespace DeviceDiscoverySample
                 }
                 catch (System.Exception ex)
                 {
-                    Log.Logger.Error(ex, "{Class} ReleasePort - failed to cleanup {ComPort}", GetType(), portNum);
+                    _log.Error(ex, " ReleasePort - failed to cleanup {ComPort}", portNum);
                 }
             }
         }
