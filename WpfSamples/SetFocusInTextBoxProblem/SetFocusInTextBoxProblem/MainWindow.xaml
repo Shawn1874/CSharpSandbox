@@ -1,0 +1,33 @@
+﻿<Window x:Class="SetFocusInTextBoxProblem.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:wi="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity" 
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SetFocusInTextBoxProblem"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="100" Width="200">
+    <StackPanel>
+        <TextBox BorderThickness="5" Text="test" IsEnabled="{Binding ConnectedDevice.NewSerialNumberRequired}" Grid.Column="1" Grid.Row="1" Margin="0,0,0,5">
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ReadyForDataEntry}" Value="True">
+                            <Setter Property="FocusManager.FocusedElement" Value="{Binding RelativeSource={RelativeSource Self}}" />
+                        </DataTrigger>
+                        <Trigger Property="IsKeyboardFocused" Value="true">
+                            <Setter Property="Background" Value="LightBlue"/>
+                            <Setter Property="BorderBrush" Value="Blue"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+            <wi:Interaction.Triggers>
+                <wi:EventTrigger EventName="LostKeyboardFocus">
+                    <wi:InvokeCommandAction  Command="{Binding DataEntryFocusLostCmd}"/>
+                </wi:EventTrigger>
+            </wi:Interaction.Triggers>
+        </TextBox>
+        <Button Command="{Binding SetFocusCmd }">EnableGetFocusTimer</Button>
+    </StackPanel>
+</Window>

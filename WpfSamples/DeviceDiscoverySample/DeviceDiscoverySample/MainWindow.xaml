@@ -6,8 +6,44 @@
         xmlns:local="clr-namespace:DeviceDiscoverySample"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="107,57,0,0" VerticalAlignment="Top" Width="75" Click="OnButtonClicked"/>
+    <DockPanel Margin="10">
 
-    </Grid>
+        <StackPanel DockPanel.Dock="Right" Margin="10,0">
+            <StackPanel.Resources>
+                <Style TargetType="Button">
+                    <Setter Property="Margin" Value="0,0,0,5" />
+                </Style>
+            </StackPanel.Resources>
+
+            <TextBlock FontWeight="Bold" Margin="0,0,0,10">Product Id</TextBlock>
+            <TextBox Text="{Binding ProductId}" />
+            <TextBlock FontWeight="Bold" Margin="0,0,0,10">Vendor Id</TextBlock>
+            <TextBox Text="{Binding VendorId}"/>
+            <TextBlock FontWeight="Bold" Margin="0,0,0,10">Data to Send</TextBlock>
+            <TextBox Text="{Binding CommandToSend}"/>
+            <Button Margin="5" Click="SendDataClicked" Content="Send Data" />
+
+        </StackPanel >
+
+        <Border BorderBrush="Black" BorderThickness="1">
+            <DockPanel DockPanel.Dock="Left">
+
+                <ListBox BorderBrush="Black" BorderThickness="0,0,0,1" DockPanel.Dock="Top" Height="75" Name="Ports" HorizontalContentAlignment="Stretch" SelectionMode="Extended"
+                     ItemsSource="{Binding ComPortNames, Mode=TwoWay}" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding}" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <TextBlock 
+                                Name="LogBox"
+                                Text="{Binding StatusBoxText, Mode=OneWay}"/>
+                </ScrollViewer>
+            </DockPanel>
+        </Border>
+    </DockPanel>
 </Window>
