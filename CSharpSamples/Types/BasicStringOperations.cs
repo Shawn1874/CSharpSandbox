@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace Strings
+namespace Types
 {
     [TestFixture]
     public class BasicStringOperations

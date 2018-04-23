@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Timers", "Timers\Timers.csproj", "{B50DCE3A-D1FA-44C1-98B2-5E310CCD9E15}"
 EndProject
@@ -24,6 +24,7 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Types", "Types\Types.csproj", "{E3837785-B2DF-4EBF-99A5-E52DC220628B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strings", "Strings\Strings.csproj", "{ED67CD6F-CF3D-4C25-979C-A29A327CA920}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Generics", "Generics\Generics.csproj", "{DD061EAD-519D-4A8D-A220-A85F935802D7}"
 EndProject
 Global
@@ -87,5 +88,9 @@ Global
 		{8E5D8C5D-1129-4942-B5BC-A1831145D2CE} = {F8989DC4-87F6-48FD-BD6A-FE4D67A5202D}
 		{FB5B8A76-8C29-415C-9BE5-25800EC0EF39} = {F8989DC4-87F6-48FD-BD6A-FE4D67A5202D}
 		{E3837785-B2DF-4EBF-99A5-E52DC220628B} = {F8989DC4-87F6-48FD-BD6A-FE4D67A5202D}
+		{DD061EAD-519D-4A8D-A220-A85F935802D7} = {F8989DC4-87F6-48FD-BD6A-FE4D67A5202D}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2122034-EDA7-49CE-80EE-7DA0237B785A}
 	EndGlobalSection
 EndGlobal

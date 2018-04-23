@@ -48,8 +48,8 @@ namespace Types
             Assert.That(ReferenceEquals(fenceRepair, fenceRepair2) == false);
             Assert.That(Equals(fenceRepair2, fenceRepair) == false);
             Assert.That(Equals(fenceRepair2.Id, fenceRepair.Id));
-
-            Assert.That(fenceRepair.ToString() == "Types.Invoice");
+            var frString = fenceRepair.ToString();
+            Assert.That(frString == "Types.Invoice");
         }
 
         [Test]

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasicStringOperations.cs" />
     <Compile Include="Enumerations.cs" />
     <Compile Include="ObjectOperations.cs" />
     <Compile Include="Person.cs" />
@@ -60,6 +61,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Strings\Strings.csproj">
+      <Project>{ed67cd6f-cf3d-4c25-979c-a29a327ca920}</Project>
+      <Name>Strings</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

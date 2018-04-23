@@ -1,28 +1,20 @@
-﻿using NUnit.Framework;
-using System.Linq;
+﻿
+using System.Globalization;
+using System.Threading;
 
-namespace Types
+namespace CustomString
 {
-    [TestFixture]
-    class StringExtMethodsTests
+    public static class StringExtensions
     {
         /// <summary>
-        /// Assert that the Any extension method also works for strings.
+        /// Converts a list of strings to title case
         /// </summary>
-        [Test]
-        public void StringAnyTest()
+        public static string ConvertToTitleCase(this string source)
         {
-            var emptyString = "";
-            Assert.That(emptyString.Any() == false);
-        }
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+            TextInfo textInfo = cultureInfo.TextInfo;
 
-        [Test]
-        public void StringReverseTest()
-        {
-            var test = "12345";
-            var reversed = test.Reverse();
-            Assert.That(reversed, Is.EqualTo("54321"));
+            return textInfo.ToTitleCase(source);
         }
-
     }
 }
