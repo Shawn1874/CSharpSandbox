@@ -45,3 +45,7 @@ __pycache__
 *.db
 Packages/
 *.opendb
+*.ide
+*.lock
+*.ide-wal
+*.ide-shm
