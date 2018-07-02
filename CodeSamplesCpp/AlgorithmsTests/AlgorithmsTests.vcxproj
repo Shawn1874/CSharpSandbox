@@ -153,6 +153,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TestBackInserter.h" />
     <ClInclude Include="TestLamdas.h" />
+    <ClInclude Include="TestMathFunctions.h" />
     <ClInclude Include="TestMinMaxOperations.h" />
     <ClInclude Include="TestRemove.h" />
     <ClInclude Include="TestRotate.h" />
@@ -168,6 +169,7 @@
     </ClCompile>
     <ClCompile Include="TestBackInserter.cpp" />
     <ClCompile Include="TestLamdas.cpp" />
+    <ClCompile Include="TestMathFunctions.cpp" />
     <ClCompile Include="TestMinMaxOperations.cpp" />
     <ClCompile Include="TestRemove.cpp" />
     <ClCompile Include="TestRotate.cpp" />
