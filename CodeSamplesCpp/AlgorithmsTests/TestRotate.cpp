@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 
 TestRotate::TestRotate()
 {
@@ -13,7 +14,6 @@ TestRotate::TestRotate()
 TestRotate::~TestRotate()
 {
 }
-
 TEST_F(TestRotate, TestRotateContainer)
 {
 	std::array<std::string, 5>  phrase = { "going", "to", "the", "store", "I'm" };
