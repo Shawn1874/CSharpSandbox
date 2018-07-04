@@ -49,3 +49,5 @@ Packages/
 *.lock
 *.ide-wal
 *.ide-shm
+*.db-shm
+*.db-wal
