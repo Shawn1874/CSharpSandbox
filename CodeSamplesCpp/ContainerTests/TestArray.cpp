@@ -37,6 +37,11 @@ TEST_F(TestArray, TestAccessors)
 	std::array<int, COUNT> squares = { 1, 4, 9, 16, 25 };
 	EXPECT_EQ(values, squares);
 
+  squares.at(1) = 8;
+  EXPECT_NE(values, squares);
+
+  EXPECT_THROW(squares.at(5), std::out_of_range);
+
 }
 
 TEST_F(TestArray, TestFillandSwap)
@@ -51,4 +56,28 @@ TEST_F(TestArray, TestFillandSwap)
 	numbers.swap(values); // must be the same length
 	EXPECT_EQ(numbers.front(), 1);
 	EXPECT_EQ(values.front(), 5);
+}
+
+// std::get can check bounds for a fixed size array at compile time.
+TEST_F(TestArray, TestGet)
+{
+  std::array<std::string, 3> greetings = { "hello", "hola", "guten tag" };
+
+  EXPECT_EQ(std::get<1>(greetings), "hola");
+  
+  // change a greeting using std::get
+  std::get<2>(greetings) = "guten morgen";
+  EXPECT_NE(std::get<2>(greetings), "guten tag");
+
+  // Get provides same info as [] and at
+  EXPECT_EQ(std::get<0>(greetings), greetings[0]);
+  EXPECT_EQ(std::get<1>(greetings), greetings.at(1));
+}
+
+TEST_F(TestArray, TestData)
+{
+  std::array<int, 3> values = { 0, 1, 2 };
+
+  EXPECT_EQ(values.data(), &values[0]);
+  EXPECT_EQ(values.data() + 2, &values.at(2));
 }

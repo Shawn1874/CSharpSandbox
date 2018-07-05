@@ -35,7 +35,7 @@ TEST_F(TestCustomAlgorithms, TestReverseVector)
 
 }
 
-TEST_F(TestCustomAlgorithms, TestMergeSortedRange)
+TEST_F(TestCustomAlgorithms, TestMergeSortedVectors)
 {
   std::vector<int> a = { 0, 1, 7, 11, 0, 0, 0, 0};
   std::vector<int> b = { 2, 3, 9, 12 };
@@ -51,7 +51,30 @@ TEST_F(TestCustomAlgorithms, TestMergeSortedRange)
   std::deque<int> c = { 1, 1, 7, 11, 0, 0, 0, 0 };
   std::deque<int> d = { 2, 3, 9, 12 };
 
-  Algorithms::MergeSortedRanges(d.begin(), d.end(), c.begin(), c.end() + 4);
+  Algorithms::MergeSortedRanges(d.begin(), d.end(), c.begin(), c.begin() + 4);
+  EXPECT_EQ(c[0], 1);
+  EXPECT_EQ(c[1], 1);
+  EXPECT_EQ(c[2], 2);
+  EXPECT_EQ(c[3], 3);
+  EXPECT_EQ(c[4], 7);
+  EXPECT_EQ(c[5], 9);
+  EXPECT_EQ(c[6], 11);
+  EXPECT_EQ(c[7], 12);
+  EXPECT_EQ(c.size(), 8);
+
+  EXPECT_EQ(d[0], 2);
+  EXPECT_EQ(d[1], 3);
+  EXPECT_EQ(d[2], 9);
+  EXPECT_EQ(d[3], 12);
+}
+
+TEST_F(TestCustomAlgorithms, TestMergeSortedDeques)
+{
+
+  std::deque<int> c = { 1, 1, 7, 11, 0, 0, 0, 0 };
+  std::deque<int> d = { 2, 3, 9, 12 };
+
+  Algorithms::MergeSortedRanges(d.begin(), d.end(), c.begin(), c.begin() + 4);
   EXPECT_EQ(c[0], 1);
   EXPECT_EQ(c[1], 1);
   EXPECT_EQ(c[2], 2);
