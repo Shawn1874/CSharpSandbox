@@ -51,3 +51,7 @@ Packages/
 *.ide-shm
 *.db-shm
 *.db-wal
+CodeSamplesCpp/.vs/CodeSamples/v16/TestStore/0/000.testlog
+CodeSamplesPython/PythonSamples/UpgradeLog.htm
+CodeSamplesPython/PythonSamples/.vs/PythonSamples/v16/TestStore/0/000.testlog
+CSharpSamples/.vs/CSharpSamples/v16/TestStore/0/000.testlog
