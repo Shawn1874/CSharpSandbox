@@ -27,6 +27,14 @@ namespace Arrays
         }
 
         [Test]
+        public void ArrayDeclarationTests()
+        {
+            var values = new int[] { 7, 6, 8, 1, 2, 3, 4, 5 };
+            Array.Sort(values);
+            Assert.That(values[0], Is.EqualTo(1));
+        }
+
+        [Test]
         public void MultiDimensionalArraysTests()
         {
             int[,,] array3D = new int[2, 2, 3] { { { 1, 2, 3 }, { 4, 5, 6 } },
