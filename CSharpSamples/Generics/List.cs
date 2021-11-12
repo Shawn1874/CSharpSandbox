@@ -8,7 +8,7 @@ namespace Generics
     class List
     {
         [Test]
-        public static void SortListTest()
+        public static void sortListTest()
         {
             var numbers = new List<int>() { 5, 3, 1, 10, 2 };
             numbers.Add(7);
@@ -16,8 +16,14 @@ namespace Generics
             numbers.Sort();
             Assert.That(numbers[0], Is.EqualTo(1));
 
-            // TODO sort ascending with ICompare
-            //numbers.Sort()
+            // sort decending with ICompare
+            numbers.Sort((a, b) => { return b - a; });
+            Assert.That(numbers[0], Is.EqualTo(10));
+
+            // sort ascending with ICompare
+            // notice how the lambda can be simplified
+            numbers.Sort((a, b) => a - b);
+            Assert.That(numbers[0], Is.EqualTo(1));
         }
 
         [Test]
@@ -57,6 +63,18 @@ namespace Generics
 
             result = numbers.IndexOf(1);
             Assert.That(result, Is.EqualTo(-1));
+
+        }
+
+        [Test]
+        public void filterTest()
+        {
+            var numbers = new List<int>() { 1, 2, 3, 4, 8, 10, 21, 23, 25, 26 };
+            Assert.That(numbers.Count, Is.EqualTo(10));
+
+            // use a simple lambda to identify even numbers, and build a new list
+            var evenNumbers = numbers.FindAll(n => n % 2 == 0);
+            Assert.That(evenNumbers.Count, Is.EqualTo(5));
 
         }
     }
